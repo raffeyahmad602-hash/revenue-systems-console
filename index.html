@@ -85,7 +85,7 @@
   .badge{ display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:3px 8px 3px 7px; border-radius:20px; white-space:nowrap; }
   .badge.verified{ background:var(--verified-bg); color:var(--verified-fg); border:1px solid var(--verified-line); }
   .badge.modeled{ background:var(--modeled-bg); color:var(--modeled-fg); border:1px solid var(--modeled-line); }
-  .badge::before{ content:"‚óè"; font-size:8px; }
+  .badge::before{ content:"\25CF "; font-size:8px; }
 
   h2{ font-size:18px; font-weight:600; margin:0; letter-spacing:-0.005em; }
   .section-head{ display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
@@ -289,7 +289,7 @@
   details.model summary{ cursor:pointer; padding:16px 18px; font-weight:600; font-size:14.5px; list-style:none; display:flex; align-items:center; justify-content:space-between; }
   details.model summary::-webkit-details-marker{ display:none; }
   details.model summary::after{ content:"+"; font-family:'IBM Plex Mono',monospace; font-size:18px; color:var(--muted); }
-  details.model[open] summary::after{ content:"‚Äì"; }
+  details.model[open] summary::after{ content:"\2013 "; }
   .model-body{ padding:0 18px 20px; display:flex; flex-direction:column; gap:22px; border-top:1px solid var(--border); }
   .model-body h4.mh{ margin:16px 0 0; font-size:13px; }
   .schema{
@@ -382,9 +382,9 @@
 
   <header class="hero">
     <div class="hero-top">
-      <div class="eyebrow">GTM Engineering ¬∑ built ahead of applying</div>
+      <div class="eyebrow">GTM Engineering &middot; built ahead of applying</div>
       <div class="brand-mark">
-        <div class="brand-byline">Raffey √ó Warp</div>
+        <div class="brand-byline">Raffey &times; Warp</div>
       </div>
     </div>
     <h1>Revenue Systems Console</h1>
@@ -402,14 +402,14 @@
   <section class="roster-section" id="roster-section">
     <div class="section-head">
       <div class="section-head-top"><h2>The hiring curve</h2><span class="badge verified">verified</span></div>
-      <p>I pulled every LinkedIn profile listing you as employer, filtered to sales/GTM titles, and read them by start date: the real version of your "5 reps ‚Üí 100+." Click any bar to see who joined.</p>
+      <p>I pulled every LinkedIn profile listing you as employer, filtered to sales/GTM titles, and read them by start date: the real version of your "5 reps &rarr; 100+." Click any bar to see who joined.</p>
     </div>
     <div class="chart-box" id="chart-roster"></div>
     <div class="roster-cta">
       <div class="stat-pill"><span class="n tnum" id="stat-ae">12</span><span class="l">Account Executive &amp; Sales hires</span></div>
       <div class="stat-pill"><span class="n tnum" id="stat-gtm">20</span><span class="l">GTM &amp; Growth hires</span></div>
       <div class="stat-pill"><span class="n tnum">Apr '25</span><span class="l">earliest sales hire on record</span></div>
-      <button class="btn" id="open-drawer">View full roster (32) ‚Üí</button>
+      <button class="btn" id="open-drawer">View full roster (32) &rarr;</button>
     </div>
   </section>
 
@@ -441,12 +441,12 @@
     <div class="two-col">
       <div class="chart-box">
         <h3>Sales + GTM annualized cost</h3>
-        <div class="chart-meta">headcount √ó band midpoint, run-rate by quarter</div>
+        <div class="chart-meta">headcount &times; band midpoint, run-rate by quarter</div>
         <div id="chart-cost"></div>
       </div>
       <div class="chart-box">
         <h3>Cost per unit of revenue growth</h3>
-        <div class="chart-meta">your payroll cost √∑ your revenue growth, shown as a multiple of Q2 '25's ratio</div>
+        <div class="chart-meta">your payroll cost &divide; your revenue growth, shown as a multiple of Q2 '25's ratio</div>
         <div id="chart-efficiency"></div>
         <p class="tl-quote" style="margin-top:10px; border-left:none; padding-left:0;" id="efficiency-note"></p>
       </div>
@@ -541,18 +541,18 @@
       <summary>Salesforce object/field schema + the queries behind the charts above</summary>
       <div class="model-body">
         <div class="schema"><span class="tbl">Opportunity</span>  (standard object, extended)
-‚îú‚îÄ StageName                    picklist   Prospecting ¬∑ Qualified ¬∑ Demo ¬∑ Proposal ¬∑ Negotiation ¬∑ Closed Won ¬∑ Closed Lost
-‚îÇ                                          (the funnel above only tracks the won path; Closed Lost still lives in the picklist)
-‚îú‚îÄ Segment__c                   picklist   SMB ¬∑ Enterprise (formula field off Account employee count / deal size)
-‚îú‚îÄ OwnerId                      lookup     User (GTM rep through Qualified, reassigned to an AE by Flow on entry to Demo)
-‚îú‚îÄ Demo_Scheduled_Date__c       date       required to enter Demo
-‚îú‚îÄ Proposal_Sent_Date__c        date       required to enter Proposal
-‚îú‚îÄ Decision_Maker_Contact__c    lookup     Contact (required to enter Negotiation)
-‚îú‚îÄ Amount                       currency   required to enter Proposal
-‚îî‚îÄ CloseDate                    date       required to enter Closed Won / Closed Lost
+&#9500;&#9472; StageName                    picklist   Prospecting &middot; Qualified &middot; Demo &middot; Proposal &middot; Negotiation &middot; Closed Won &middot; Closed Lost
+&#9474;                                          (the funnel above only tracks the won path; Closed Lost still lives in the picklist)
+&#9500;&#9472; Segment__c                   picklist   SMB &middot; Enterprise (formula field off Account employee count / deal size)
+&#9500;&#9472; OwnerId                      lookup     User (GTM rep through Qualified, reassigned to an AE by Flow on entry to Demo)
+&#9500;&#9472; Demo_Scheduled_Date__c       date       required to enter Demo
+&#9500;&#9472; Proposal_Sent_Date__c        date       required to enter Proposal
+&#9500;&#9472; Decision_Maker_Contact__c    lookup     Contact (required to enter Negotiation)
+&#9500;&#9472; Amount                       currency   required to enter Proposal
+&#9492;&#9472; CloseDate                    date       required to enter Closed Won / Closed Lost
 
 <span class="tbl">Account</span>  (standard object, extended)
-‚îî‚îÄ Payroll_Processing_Volume__c currency, rollup (written nightly from Snowflake, not sales-entered)
+&#9492;&#9472; Payroll_Processing_Volume__c currency, rollup (written nightly from Snowflake, not sales-entered)
 
 <span class="tbl">int_pipeline_stages</span>  (Snowflake, built from the synced Opportunity object)
    one row per opportunity per stage it has passed through, with segment and stage_order.
@@ -566,15 +566,15 @@ from int_pipeline_stages
 where stage = 'Closed Won'
   and close_date &gt;= date_trunc('quarter', current_date)
 group by segment</code>
-            <div class="worked">‚Üí SMB 23, Enterprise 18, the exact split in the funnel chart above.</div>
+            <div class="worked">&rarr; SMB 23, Enterprise 18, the exact split in the funnel chart above.</div>
           </div>
           <div class="formula">
-            <h4>Qualified ‚Üí Demo conversion</h4>
+            <h4>Qualified &rarr; Demo conversion</h4>
             <code>select
   count(*) filter (where stage_order &gt;= 3) * 1.0
   / count(*) filter (where stage_order &gt;= 2) as rate
 from int_pipeline_stages</code>
-            <div class="worked">‚Üí 210 / 340 = 62%, the same rate chained into the hiring-plan calculator above.</div>
+            <div class="worked">&rarr; 210 / 340 = 62%, the same rate chained into the hiring-plan calculator above.</div>
           </div>
         </div>
       </div>
@@ -613,7 +613,7 @@ from int_pipeline_stages</code>
     {name:"John Martin", title:"Founding Account Executive", date:"2026-02", url:"https://www.linkedin.com/in/xhonmartin"},
     {name:"Stefan Radanovic", title:"Founding Revenue Operations", date:"2026-04", url:"https://www.linkedin.com/in/stefan-radanovic-265bb8133"},
     {name:"Sarah Reiff", title:"Senior Account Executive", date:"2026-04", url:"https://www.linkedin.com/in/sarahreiff"},
-    {name:"Arshia A.", title:"Account Executive ‚Äì Founding Team", date:"2026-04", url:"https://www.linkedin.com/in/arshia-aghasharif"},
+    {name:"Arshia A.", title:"Account Executive \u2013 Founding Team", date:"2026-04", url:"https://www.linkedin.com/in/arshia-aghasharif"},
     {name:"Vito Palombella", title:"Senior Account Executive", date:"2026-06", url:"https://www.linkedin.com/in/vito-palombella"},
     {name:"Kaito H.", title:"Founding Account Manager", date:"2026-06", url:"https://www.linkedin.com/in/kaito-h-9a1a60231"},
     {name:"Bridget Kane", title:"Account Executive", date:"2026-07", url:"https://www.linkedin.com/in/bridgetakane"},
@@ -662,9 +662,9 @@ from int_pipeline_stages</code>
   var revenueIndexProj = [false,false,false,false,false,true];
 
   var compBands = [
-    {range:"$155K ‚Äì $230K", label:"Account Executive, per warp.co/careers"},
-    {range:"$105K ‚Äì $140K", label:"SDR, per warp.co/careers (you title this ‚ÄúGTM‚Äù)"},
-    {range:"$125K ‚Äì $180K", label:"this role, GTM Engineer, Revenue Systems"}
+    {range:"$155K \u2013 $230K", label:"Account Executive, per warp.co/careers"},
+    {range:"$105K \u2013 $140K", label:"SDR, per warp.co/careers (you title this \u201CGTM\u201D)"},
+    {range:"$125K \u2013 $180K", label:"this role, GTM Engineer, Revenue Systems"}
   ];
   var AE_OTE_MID = 192.5;   // $K, midpoint of Warp's posted Account Executive band
   var GTM_OTE_MID = 122.5;  // $K, midpoint of Warp's posted SDR band (closest real analog to "GTM")
@@ -706,7 +706,7 @@ from int_pipeline_stages</code>
     {name:"Sarah Hunter", title:"Senior Account Executive", track:"AE", start:"2025-04", demo:39, proposal:24, negotiation:17, closedCount:8, closedAmount:142000, quota:120000},
     {name:"John Martin", title:"Founding Account Executive", track:"AE", start:"2026-02", demo:32, proposal:20, negotiation:14, closedCount:6, closedAmount:115000, quota:100000},
     {name:"Sarah Reiff", title:"Senior Account Executive", track:"AE", start:"2026-04", demo:27, proposal:17, negotiation:12, closedCount:5, closedAmount:93000, quota:85000},
-    {name:"Arshia A.", title:"Account Executive ‚Äì Founding Team", track:"AE", start:"2026-04", demo:26, proposal:16, negotiation:11, closedCount:5, closedAmount:88000, quota:80000},
+    {name:"Arshia A.", title:"Account Executive \u2013 Founding Team", track:"AE", start:"2026-04", demo:26, proposal:16, negotiation:11, closedCount:5, closedAmount:88000, quota:80000},
     {name:"Vito Palombella", title:"Senior Account Executive", track:"AE", start:"2026-06", demo:18, proposal:11, negotiation:8, closedCount:3, closedAmount:67000, quota:55000},
     {name:"Bridget Kane", title:"Account Executive", track:"AE", start:"2026-07", demo:13, proposal:8, negotiation:6, closedCount:3, closedAmount:45000, quota:40000},
     {name:"Nikki Matsuoka", title:"Account Executive", track:"AE", start:"2026-07", demo:13, proposal:8, negotiation:6, closedCount:3, closedAmount:47000, quota:40000},
@@ -1016,7 +1016,7 @@ from int_pipeline_stages</code>
       row.appendChild(rail);
       var body = el("div","tl-body");
       body.appendChild(el("p","tl-headline", item.headline));
-      body.appendChild(el("p","tl-quote", "‚Äú" + item.quote + "‚Äù"));
+      body.appendChild(el("p","tl-quote", "\u201C" + item.quote + "\u201D"));
       body.appendChild(el("div","tl-src", item.src));
       row.appendChild(body);
       host.appendChild(row);
@@ -1052,7 +1052,7 @@ from int_pipeline_stages</code>
     var peakIdx = efficiencyIndex.indexOf(peak);
     var last = efficiencyIndex[efficiencyIndex.length-1];
     document.getElementById("efficiency-note").textContent =
-      "Your cost per unit of revenue growth peaked at " + peak.toFixed(2) + "x the Q2 '25 ratio during the " + headcountQuarters[peakIdx] + " hiring surge: new reps cost money immediately but take 3‚Äì6 months to ramp. It's recovered to " + last.toFixed(2) + "x as that cohort starts contributing pipeline.";
+      "Your cost per unit of revenue growth peaked at " + peak.toFixed(2) + "x the Q2 '25 ratio during the " + headcountQuarters[peakIdx] + " hiring surge: new reps cost money immediately but take 3\u20136 months to ramp. It's recovered to " + last.toFixed(2) + "x as that cohort starts contributing pipeline.";
   })();
 
   // ---------- render: hiring plan calculator ----------
@@ -1062,12 +1062,12 @@ from int_pipeline_stages</code>
   //     (Sarah Hunter, John Martin, Sarah Reiff, Arshia A., Benjamin Shein) = (142+115+93+88+88)/5
   //   - mature GTM quarterly qualified leads: avg across the 7 GTM reps with 4+ months tenure
   //     (Maria, Manveer, Lucas Mendes, Madeline, Dean Lucas, Ari S., Jack Hutchins) = (31+33+31+31+31+29+28)/7
-  //   - Qualified ‚Üí Closed Won: the funnel's own blended stage conversion rates, chained
-  //   - avg deal size: total AE closed-won $ √∑ total AE closed-won deals, from the same roster
+  //   - Qualified \u2192 Closed Won: the funnel's own blended stage conversion rates, chained
+  //   - avg deal size: total AE closed-won $ \u00F7 total AE closed-won deals, from the same roster
   (function(){
     var MATURE_AE_REV_Q = 105200;
     var MATURE_GTM_QUALIFIED_Q = 30.6;
-    var QUALIFIED_TO_CLOSED = 0.62 * 0.62 * 0.71 * 0.45; // Qualified‚ÜíDemo‚ÜíProposal‚ÜíNegotiation‚ÜíClosed
+    var QUALIFIED_TO_CLOSED = 0.62 * 0.62 * 0.71 * 0.45; // Qualified\u2192Demo\u2192Proposal\u2192Negotiation\u2192Closed
     var AVG_DEAL_SIZE = 741000 / 41;
     var MATURE_GTM_REV_Q = MATURE_GTM_QUALIFIED_Q * QUALIFIED_TO_CLOSED * AVG_DEAL_SIZE;
 
@@ -1140,7 +1140,7 @@ from int_pipeline_stages</code>
       chip.appendChild(el("span","track-pill "+h.track, h.track));
       chip.appendChild(el("span", null, shortDate(h.start)));
       var rm = document.createElement("button");
-      rm.type = "button"; rm.textContent = "√ó"; rm.setAttribute("aria-label","Remove this hire");
+      rm.type = "button"; rm.textContent = "\u00D7"; rm.setAttribute("aria-label","Remove this hire");
       rm.addEventListener("click", function(){
         hires = hires.filter(function(x){ return x.id !== h.id; });
         renderAll();
@@ -1193,9 +1193,9 @@ from int_pipeline_stages</code>
     function renderStats(){
       statsHost.innerHTML = "";
       if (!hires.length){
-        statsHost.appendChild(calcStat("‚Äì", "Added cost, per year"));
-        statsHost.appendChild(calcStat("‚Äì", "Revenue, once ramped (per year)"));
-        statsHost.appendChild(calcStat("‚Äì", "Payback by"));
+        statsHost.appendChild(calcStat("\u2013", "Added cost, per year"));
+        statsHost.appendChild(calcStat("\u2013", "Revenue, once ramped (per year)"));
+        statsHost.appendChild(calcStat("\u2013", "Payback by"));
         summaryEl.textContent = "Add a hire above to see the plan.";
         return;
       }
@@ -1297,7 +1297,7 @@ from int_pipeline_stages</code>
         if (i < funnelStages.length-1){
           var cur = valueFor(s, mode), next = valueFor(funnelStages[i+1], mode);
           var conv = (next/cur*100).toFixed(0);
-          wrap.appendChild(el("div","funnel-conv", '<span class="arrow">‚Üì</span> '+conv+"% conversion"));
+          wrap.appendChild(el("div","funnel-conv", '<span class="arrow">\u2193</span> '+conv+"% conversion"));
         }
       });
       body.appendChild(wrap);
@@ -1371,7 +1371,7 @@ from int_pipeline_stages</code>
       var head = el("div","rep-card-head");
       var left = el("div");
       left.appendChild(el("div","rep-card-name", r.name));
-      left.appendChild(el("div","rep-card-title", r.title + " ¬∑ " + (r.track==="AE"?"AE & Sales":"GTM & Growth") + " ¬∑ joined " + monthLabel(r.start)));
+      left.appendChild(el("div","rep-card-title", r.title + " \u00B7 " + (r.track==="AE"?"AE & Sales":"GTM & Growth") + " \u00B7 joined " + monthLabel(r.start)));
       head.appendChild(left);
 
       var isTeamRole = (r.quota == null && r.prospecting == null);
@@ -1498,7 +1498,7 @@ from int_pipeline_stages</code>
     }
 
     function fmtCell(r, key){
-      if (r[key] == null) return "‚Äì";
+      if (r[key] == null) return "\u2013";
       if (key === "start") return monthLabel(r[key]);
       if (key === "closedAmount") return fmtMoneyK(r[key]/1000);
       if (key === "track") return "";
@@ -1511,7 +1511,7 @@ from int_pipeline_stages</code>
       var thead = document.createElement("tr");
       cols.forEach(function(c){
         var th = document.createElement("th");
-        th.textContent = c.label + (sortState.key === c.key ? (sortState.dir === "asc" ? " ‚Üë" : " ‚Üì") : "");
+        th.textContent = c.label + (sortState.key === c.key ? (sortState.dir === "asc" ? " \u2191" : " \u2193") : "");
         if (sortState.key === c.key) th.className = "sorted";
         th.addEventListener("click", function(){
           if (sortState.key === c.key){ sortState.dir = sortState.dir === "asc" ? "desc" : "asc"; }
