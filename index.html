@@ -236,6 +236,17 @@
   /* small multiples */
   .small-multiples{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
 
+  /* stacked hiring-pace bars (per-quarter, by track) */
+  .stack-bars{ display:flex; align-items:flex-end; gap:14px; height:150px; padding-top:22px; }
+  .stack-col-wrap{ flex:1; max-width:56px; height:100%; position:relative; display:flex; flex-direction:column-reverse; align-items:stretch; }
+  .stack-seg{ width:100%; flex:none; }
+  .stack-seg.ae{ background:var(--accent); }
+  .stack-seg.gtm{ background:var(--accent-2); }
+  .stack-seg:last-child{ border-radius:3px 3px 0 0; }
+  .stack-total{ position:absolute; top:-20px; left:0; right:0; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--ink); }
+  .stack-labels{ display:flex; gap:14px; margin-top:6px; }
+  .stack-label{ flex:1; max-width:56px; text-align:center; font-size:9.5px; font-family:'IBM Plex Mono',monospace; color:var(--muted); }
+
   /* timeline (payroll milestones) */
   .timeline{ display:flex; flex-direction:column; gap:0; }
   .tl-item{ display:grid; grid-template-columns: 96px 20px 1fr; gap:14px; }
@@ -282,7 +293,15 @@
   /* deal desk flow */
   .flow-row{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
   .flow-step{ background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:10px 13px; font-size:12.5px; font-weight:600; color:var(--ink); }
+  .flow-step.ae{ border-color:var(--verified-line); }
+  .flow-step.gtm{ border-color:var(--modeled-line); }
   .flow-arrow{ color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:14px; flex:none; }
+  .flow-lane{ display:flex; flex-direction:column; gap:8px; }
+  .flow-lane + .flow-lane{ margin-top:14px; }
+  .flow-lane-label{ display:flex; align-items:center; gap:7px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .flow-lane-dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+  .flow-handoff{ display:flex; align-items:center; gap:8px; margin:2px 0 2px 4px; color:var(--muted); font-size:11.5px; }
+  .flow-handoff .arrow-down{ font-family:'IBM Plex Mono',monospace; }
 
   /* model / SQL section */
   details.model{ background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); }
@@ -411,6 +430,19 @@
       <div class="stat-pill"><span class="n tnum">Apr '25</span><span class="l">earliest sales hire on record</span></div>
       <button class="btn" id="open-drawer">View full roster (32) &rarr;</button>
     </div>
+    <div class="two-col" style="margin-top:16px;">
+      <div class="chart-box">
+        <h3>Hires added per quarter, by track</h3>
+        <div class="chart-meta">same roster, not cumulative: shows the actual hiring cadence quarter to quarter</div>
+        <div id="chart-hiring-pace"></div>
+        <div class="chart-key" id="hiring-pace-key"></div>
+      </div>
+      <div class="chart-box">
+        <h3>Title mix, current roster</h3>
+        <div class="chart-meta">32 people, grouped by title as listed on LinkedIn</div>
+        <div id="title-mix"></div>
+      </div>
+    </div>
   </section>
 
   <section class="growth-section" id="growth-section" hidden>
@@ -418,6 +450,7 @@
       <div class="section-head-top"><h2>Growth signals, in Ayush Sharma's own words</h2><span class="badge verified">verified</span></div>
       <p>You don't publish ARR in dollars, so I used the growth-rate and payroll-volume figures Ayush has posted publicly, with dates.</p>
     </div>
+    <div class="tile-grid" id="growth-tiles" style="margin-bottom:16px;"></div>
     <div class="two-col">
       <div class="chart-box">
         <h3>Payroll volume processed</h3>
@@ -429,6 +462,13 @@
         <div class="chart-meta">indexed to the multipliers you've stated publicly, since you don't publish a dollar figure</div>
         <div id="chart-revenue"></div>
       </div>
+    </div>
+    <div class="chart-box" style="margin-top:16px;">
+      <h3>Revenue growth vs. headcount growth</h3>
+      <div class="chart-meta">both indexed to their own Sep '26 level, so the two curves are shaped for comparison, not read as dollars</div>
+      <div id="chart-growth-headcount"></div>
+      <div class="chart-key" id="growth-headcount-key"></div>
+      <p class="chart-key-note divider" id="growth-headcount-note"></p>
     </div>
   </section>
 
@@ -504,6 +544,48 @@
       </div>
       <div id="funnel-body" style="margin-top:14px;"></div>
     </div>
+
+    <div class="chart-box" style="margin-top:16px;">
+      <div class="section-head-top" style="margin-bottom:2px;"><h3 style="margin:0;">Deal desk: who owns each stage</h3><span class="badge modeled" style="font-size:9.5px;">proposed</span></div>
+      <div class="chart-meta">the handoff point that OwnerId reassignment in the schema below is built around</div>
+      <div style="margin-top:14px;">
+        <div class="flow-lane">
+          <div class="flow-lane-label"><span class="flow-lane-dot" style="background:var(--accent-2);"></span>GTM &amp; Growth</div>
+          <div class="flow-row">
+            <div class="flow-step gtm">Prospecting</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step gtm">Qualified</div>
+          </div>
+        </div>
+        <div class="flow-handoff"><span class="arrow-down">&darr;</span> hands off to an AE on qualification</div>
+        <div class="flow-lane">
+          <div class="flow-lane-label"><span class="flow-lane-dot" style="background:var(--accent);"></span>AE &amp; Sales</div>
+          <div class="flow-row">
+            <div class="flow-step ae">Demo</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step ae">Proposal</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step ae">Negotiation</div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step ae">Closed Won</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-grid" style="margin-top:16px;">
+      <div class="compare-card">
+        <h3>Sales cycle length, by segment</h3>
+        <div class="cc-sub">modeled, Prospecting to Closed Won</div>
+        <div id="cycle-time-body"></div>
+      </div>
+      <div class="compare-card">
+        <h3>Win rate, last 4 quarters</h3>
+        <div class="cc-sub">modeled, Closed Won &divide; (Closed Won + Closed Lost)</div>
+        <div id="chart-winrate"></div>
+      </div>
+    </div>
+
     <div class="chart-box" style="margin-top:16px;">
       <h3>Rep performance</h3>
       <div class="chart-meta">every rep on the roster above: AE &amp; Sales own Demo through Closed Won, GTM &amp; Growth own Prospecting and Qualified</div>
@@ -575,6 +657,72 @@ group by segment</code>
   / count(*) filter (where stage_order &gt;= 2) as rate
 from int_pipeline_stages</code>
             <div class="worked">&rarr; 210 / 340 = 62%, the same rate chained into the hiring-plan calculator above.</div>
+          </div>
+        </div>
+
+        <h4 class="mh">The dbt marts layer, built on top of int_pipeline_stages</h4>
+        <div class="schema"><span class="tbl">fct_pipeline_stage</span>  (grain: one row per opportunity per stage entered)
+&#9500;&#9472; opportunity_id, stage, stage_order, segment, entered_at, rep_id
+&#9500;&#9472; is_current_stage                boolean   true for each opp's latest stage row
+&#9492;&#9472; days_in_prior_stage             number    entered_at minus the prior stage's entered_at
+
+<span class="tbl">dim_rep</span>  (grain: one row per rep, rebuilt nightly from Workday + Salesforce User)
+&#9500;&#9472; rep_id, name, track                enum       AE &middot; GTM
+&#9500;&#9472; title, start_date                  from the same LinkedIn/HRIS roster the hiring curve above is built from
+&#9492;&#9472; ote_annual                         from the comp band this rep's title maps to, per the cost section above
+
+<span class="tbl">fct_hiring_cost</span>  (grain: one row per rep per day, the source for the cost + ramp charts above)
+&#9500;&#9472; rep_id, date, cumulative_cost        dim_rep.ote_annual &#247; 365, accrued from start_date
+&#9492;&#9472; cumulative_revenue                   ramped linearly over 120 days from start_date, then flat at the mature rate</div>
+
+        <div class="formula-grid">
+          <div class="formula">
+            <h4>Rep attainment rollup</h4>
+            <code>select r.name, r.track,
+  sum(o.amount) filter (where o.stage='Closed Won') as closed,
+  r.quota_quarterly as quota
+from fct_pipeline_stage p
+join dim_rep r using (rep_id)
+join opportunity o using (opportunity_id)
+group by r.name, r.track, r.quota_quarterly</code>
+            <div class="worked">&rarr; the quota/closed/attainment numbers behind every card in "Search a rep" above.</div>
+          </div>
+          <div class="formula">
+            <h4>Cost per unit of revenue growth</h4>
+            <code>select date_trunc('quarter', date) as qtr,
+  sum(cumulative_cost) / nullif(sum(cumulative_revenue),0) as ratio
+from fct_hiring_cost
+group by 1 order by 1</code>
+            <div class="worked">&rarr; the efficiency-index line in the Cost section above, before normalizing to Q2 '25.</div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="model" style="margin-top:14px;">
+      <summary>How I'd actually roll this out</summary>
+      <div class="model-body">
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h3>Phase 1 &middot; weeks 1&ndash;3</h3>
+            <div class="cc-sub">land the real objects</div>
+            <div class="cc-row"><span class="cc-label">Sync Opportunity, Account, User via Fivetran/native connector</span></div>
+            <div class="cc-row"><span class="cc-label">Add Segment__c, Demo_Scheduled_Date__c and the other stage-gate fields from the schema above</span></div>
+            <div class="cc-row"><span class="cc-label">Backfill dim_rep from the LinkedIn/HRIS roster already used on the Hiring tab</span></div>
+          </div>
+          <div class="compare-card">
+            <h3>Phase 2 &middot; weeks 4&ndash;7</h3>
+            <div class="cc-sub">build the marts</div>
+            <div class="cc-row"><span class="cc-label">int_pipeline_stages, fct_pipeline_stage, fct_hiring_cost as dbt models, tested and documented</span></div>
+            <div class="cc-row"><span class="cc-label">Nightly Payroll_Processing_Volume__c rollup from the Snowflake payroll-volume tables</span></div>
+            <div class="cc-row"><span class="cc-label">Replace every modeled number on this page with its real query, one section at a time</span></div>
+          </div>
+          <div class="compare-card">
+            <h3>Phase 3 &middot; weeks 8+</h3>
+            <div class="cc-sub">put it in front of the team</div>
+            <div class="cc-row"><span class="cc-label">Rep-facing attainment view, refreshed daily instead of quarter-end</span></div>
+            <div class="cc-row"><span class="cc-label">Slack alert when a segment's win rate or cycle length moves outside its trailing range</span></div>
+            <div class="cc-row"><span class="cc-label">Hiring-plan calculator wired to live comp bands and actual ramp curves, not the modeled ones above</span></div>
           </div>
         </div>
       </div>
@@ -653,6 +801,14 @@ from int_pipeline_stages</code>
     {date:"~Apr '26", headline:"On track for $1.7B processed this year; revenue doubled in 12 weeks", quote:"Warp is on track to process over $1.7B in payroll this year... Revenue doubled in the last 12 weeks. 5x+ YoY for two straight years... 1,000+ companies run on Warp. ~40 people today, ~100 by EOY.", src:"Ayush Sharma"}
   ];
 
+  // every figure here is a number from the quotes above, pulled out into its own tile
+  var growthKpis = [
+    {value:"$1.7B+", label:"payroll processed, on track this year"},
+    {value:"1,000+", label:"companies running on Warp"},
+    {value:"5x+", label:"YoY revenue growth, two years running"},
+    {value:"~100", label:"people at Warp targeted by EOY"}
+  ];
+
   // revenue index: baseline 1x, then apply Warp's own stated multipliers
   // indexed to Warp's own disclosed anchors: 5x YoY to early '25, 5x+ YoY again to early '26,
   // 2x more by Apr '26. Quarters between anchors are smoothed on a log curve; Q3 '26 extrapolates
@@ -694,6 +850,18 @@ from int_pipeline_stages</code>
     {name:"Negotiation", count:92,  smb:57,  ent:35},
     {name:"Closed Won",  count:41,  smb:23,  ent:18}
   ];
+
+  // modeled sales-cycle length, in days, Prospecting to Closed Won: Enterprise takes longer
+  // to close but converts at a higher rate end to end (matches the funnel above)
+  var cycleTimeBySegment = [
+    {segment:"SMB", days:28},
+    {segment:"Enterprise", days:65}
+  ];
+
+  // modeled win rate (Closed Won / (Closed Won + Closed Lost)) for the last 4 quarters,
+  // trending up as the deal-desk handoff above matures
+  var winRateQuarters = ["Q4 '25","Q1 '26","Q2 '26","Q3 '26"];
+  var winRateValues = [0.31, 0.33, 0.35, 0.38];
 
   // rep-level quota performance, current quarter. Only individual-contributor, quota-carrying
   // roles get numbers; leadership/ops roles on the same roster carry a team number, not a personal one.
@@ -949,6 +1117,44 @@ from int_pipeline_stages</code>
     return "Q" + q + " '" + parts[0].slice(2);
   }
 
+  // ---------- stacked bar chart (two series, e.g. hires per quarter by track) ----------
+  function stackBarChart(container, opts){
+    var labels = opts.labels, seriesA = opts.seriesA, seriesB = opts.seriesB, H = opts.height || 128;
+    var totals = labels.map(function(l,i){ return seriesA.values[i] + seriesB.values[i]; });
+    var max = Math.max.apply(null, totals.concat([1]));
+
+    var bars = el("div","stack-bars"); bars.style.height = H + "px";
+    var labelsRow = el("div","stack-labels");
+
+    labels.forEach(function(l,i){
+      var wrap = el("div","stack-col-wrap");
+      var total = totals[i];
+      if (total > 0){
+        var totalLbl = el("div","stack-total", total+"");
+        wrap.appendChild(totalLbl);
+      }
+      var aH = max ? Math.round((seriesA.values[i]/max) * (H-22)) : 0;
+      var bH = max ? Math.round((seriesB.values[i]/max) * (H-22)) : 0;
+      if (seriesA.values[i] > 0){
+        var segA = el("div","stack-seg ae"); segA.style.height = Math.max(aH,3) + "px";
+        segA.addEventListener("mousemove", function(v){ return function(e){ showTip(e, seriesA.name + ": " + v); }; }(seriesA.values[i]));
+        segA.addEventListener("mouseleave", hideTip);
+        wrap.appendChild(segA);
+      }
+      if (seriesB.values[i] > 0){
+        var segB = el("div","stack-seg gtm"); segB.style.height = Math.max(bH,3) + "px";
+        segB.addEventListener("mousemove", function(v){ return function(e){ showTip(e, seriesB.name + ": " + v); }; }(seriesB.values[i]));
+        segB.addEventListener("mouseleave", hideTip);
+        wrap.appendChild(segB);
+      }
+      bars.appendChild(wrap);
+      labelsRow.appendChild(el("div","stack-label", l));
+    });
+
+    container.appendChild(bars);
+    container.appendChild(labelsRow);
+  }
+
   // ---------- drawer (reusable) ----------
   var overlay = document.getElementById("drawer-overlay");
   var drawerEl = document.getElementById("drawer");
@@ -1006,6 +1212,54 @@ from int_pipeline_stages</code>
   document.getElementById("stat-ae").textContent = aeRoster.length;
   document.getElementById("stat-gtm").textContent = gtmRoster.length;
 
+  // ---------- render: hires per quarter by track + title mix ----------
+  (function(){
+    var aeByQ = {}, gtmByQ = {};
+    headcountQuarters.forEach(function(q){ aeByQ[q] = 0; gtmByQ[q] = 0; });
+    aeRoster.forEach(function(p){ aeByQ[quarterOf(p.date)]++; });
+    gtmRoster.forEach(function(p){ gtmByQ[quarterOf(p.date)]++; });
+
+    var paceBox = document.getElementById("chart-hiring-pace");
+    stackBarChart(paceBox, {
+      labels: headcountQuarters,
+      seriesA: { name:"AE & Sales", values: headcountQuarters.map(function(q){ return aeByQ[q]; }) },
+      seriesB: { name:"GTM & Growth", values: headcountQuarters.map(function(q){ return gtmByQ[q]; }) }
+    });
+    var keyHost = document.getElementById("hiring-pace-key");
+    var k1 = el("div","chart-key-item"); k1.appendChild(el("span","chart-key-dot")); k1.lastChild.style.background="var(--accent)"; k1.appendChild(document.createTextNode("AE & Sales"));
+    var k2 = el("div","chart-key-item"); k2.appendChild(el("span","chart-key-dot")); k2.lastChild.style.background="var(--accent-2)"; k2.appendChild(document.createTextNode("GTM & Growth"));
+    keyHost.appendChild(k1); keyHost.appendChild(k2);
+
+    // title mix: count every distinct title across both rosters, case-insensitive on the
+    // "founding" prefix since it's inconsistently capitalized in the LinkedIn source data
+    var titleCounts = {};
+    aeRoster.concat(gtmRoster).forEach(function(p){
+      var t = p.title;
+      titleCounts[t] = (titleCounts[t] || 0) + 1;
+    });
+    var titleList = Object.keys(titleCounts).map(function(t){ return {title:t, count:titleCounts[t]}; })
+      .sort(function(a,b){ return b.count - a.count || a.title.localeCompare(b.title); });
+    var foundingCount = aeRoster.concat(gtmRoster).filter(function(p){ return /founding/i.test(p.title); }).length;
+
+    var mixBox = document.getElementById("title-mix");
+    var maxCount = titleList[0].count;
+    var rank = el("div","vertical-rank");
+    titleList.slice(0,8).forEach(function(t,i){
+      var row = el("div","vr-row");
+      row.appendChild(el("div","vr-rank", (i+1)+""));
+      row.appendChild(el("div","vr-name", t.title));
+      var track = el("div","rep-bar-track"); track.style.cssText = "flex:1; margin:0 10px;";
+      var fill = el("div","rep-bar-fill"); fill.style.width = Math.round(t.count/maxCount*100) + "%";
+      track.appendChild(fill);
+      row.appendChild(track);
+      row.appendChild(el("div","vr-note", t.count+""));
+      rank.appendChild(row);
+    });
+    mixBox.appendChild(rank);
+    var note = el("div","chart-key-note divider", foundingCount + " of 32 carry a \u201Cfounding\u201D title, the earliest risk-on hires on each track.");
+    mixBox.appendChild(note);
+  })();
+
   // ---------- render: payroll timeline ----------
   (function(){
     var host = document.getElementById("timeline");
@@ -1030,6 +1284,36 @@ from int_pipeline_stages</code>
     var note = el("div","chart-meta", "you've posted 5x+ YoY for two straight years, then 2x in the most recent quarter");
     note.style.marginTop = "6px";
     box.appendChild(note);
+  })();
+
+  // ---------- render: growth KPI tiles ----------
+  (function(){
+    var host = document.getElementById("growth-tiles");
+    growthKpis.forEach(function(k){
+      var tile = el("div","tile");
+      tile.appendChild(el("div","tile-label", k.label));
+      tile.appendChild(el("div","tile-value", k.value));
+      host.appendChild(tile);
+    });
+  })();
+
+  // ---------- render: revenue growth vs. headcount growth ----------
+  (function(){
+    var headcountIndex = headcountCumulative.map(function(n){ return Math.round(n / headcountCumulative[headcountCumulative.length-1] * 100); });
+    var box = document.getElementById("chart-growth-headcount");
+    dualLineChart(box, {
+      width: 900, height: 200, labels: headcountQuarters,
+      seriesA: { name:"Headcount", values: headcountIndex },
+      seriesB: { name:"Revenue", values: revenueIndexValues },
+      fmt: function(v){ return v + "%"; }
+    });
+    var keyHost = document.getElementById("growth-headcount-key");
+    var k1 = el("div","chart-key-item"); k1.appendChild(el("span","chart-key-dot")); k1.lastChild.style.background="var(--accent-2)"; k1.appendChild(document.createTextNode("Headcount, % of Sep '26 level"));
+    var k2 = el("div","chart-key-item"); k2.appendChild(el("span","chart-key-dot")); k2.lastChild.style.background="var(--accent)"; k2.appendChild(document.createTextNode("Revenue, % of Sep '26 level"));
+    keyHost.appendChild(k1); keyHost.appendChild(k2);
+    var midQ = 2; // Q4 '25
+    document.getElementById("growth-headcount-note").textContent =
+      "By " + headcountQuarters[midQ] + ", headcount was still at " + headcountIndex[midQ] + "% of where it sits today while revenue had already reached " + revenueIndexValues[midQ] + "%: the early team was doing more with less before the Q1 '26 hiring surge caught up.";
   })();
 
   // ---------- render: comp pills + cost vs. efficiency ----------
@@ -1335,6 +1619,27 @@ from int_pipeline_stages</code>
     });
 
     renderFunnel("all");
+  })();
+
+  // ---------- render: cycle time by segment + win rate trend ----------
+  (function(){
+    var cycleHost = document.getElementById("cycle-time-body");
+    var maxDays = Math.max.apply(null, cycleTimeBySegment.map(function(s){ return s.days; }));
+    cycleTimeBySegment.forEach(function(s){
+      var row = el("div","cc-row");
+      row.appendChild(el("span","cc-label", s.segment));
+      row.appendChild(el("span","cc-value", s.days + " days"));
+      cycleHost.appendChild(row);
+    });
+    var diffRow = el("div","chart-key-note divider",
+      "Enterprise takes " + (cycleTimeBySegment[1].days - cycleTimeBySegment[0].days) + " days longer to close than SMB, but converts end to end at more than double the rate (see the funnel above).");
+    cycleHost.appendChild(diffRow);
+
+    var wrBox = document.getElementById("chart-winrate");
+    lineChart(wrBox, {
+      width: 420, height: 150, values: winRateValues, labels: winRateQuarters,
+      proj: [false,false,false,false], fmt: function(v){ return Math.round(v*100) + "%"; }
+    });
   })();
 
   // ---------- render: rep lookup (search view) ----------
