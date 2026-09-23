@@ -379,6 +379,150 @@
   .roster-title{ font-size:11.5px; color:var(--muted); }
   .roster-date{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-2); white-space:nowrap; }
 
+  /* ===== territory: trigger feed + TAM calculator ===== */
+
+  /* control rows: every control on one 34px baseline so the two rows stack evenly */
+  .terr-controls{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:14px; }
+  .terr-controls-row2{ margin-top:10px; }
+  .terr-seg-chip{
+    display:inline-flex; align-items:center; height:34px;
+    font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; color:var(--ink-2);
+    background:var(--page); border:1px solid var(--border); border-radius:20px; padding:0 13px; cursor:pointer;
+    transition:background .12s ease, color .12s ease, border-color .12s ease;
+  }
+  .terr-seg-chip:hover{ border-color:var(--accent); color:var(--ink); }
+  .terr-seg-chip[aria-pressed="true"]{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
+  .terr-seg-chip .ct{ opacity:.55; margin-left:6px; font-family:'IBM Plex Mono',monospace; }
+
+  .terr-field{ display:flex; align-items:center; gap:8px; }
+  .terr-field-label{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; white-space:nowrap; }
+  .terr-field select, .terr-field input[type="search"]{
+    height:34px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--ink);
+    background:var(--page); border:1px solid var(--border); border-radius:8px; padding:0 11px;
+  }
+  .terr-field input[type="search"]{ width:190px; }
+  .terr-field select:focus, .terr-field input:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .terr-reset{
+    height:34px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12.5px; font-weight:600;
+    color:var(--ink-2); background:var(--page); border:1px solid var(--border); border-radius:8px;
+    padding:0 14px; cursor:pointer; margin-left:auto;
+  }
+  .terr-reset:hover{ border-color:var(--accent); color:var(--ink); }
+  .terr-reset:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
+
+  /* table */
+  .terr-table-wrap{ overflow-x:auto; margin-top:16px; }
+  table.terr-table{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:760px; }
+  table.terr-table th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted);
+    font-weight:600; padding:0 14px 9px 0; border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  table.terr-table th:last-child, table.terr-table td:last-child{ padding-right:0; }
+  table.terr-table th.srt{ cursor:pointer; user-select:none; }
+  table.terr-table th.srt:hover{ color:var(--ink); }
+  table.terr-table th.sorted{ color:var(--accent); }
+  table.terr-table td{ padding:11px 14px; padding-left:0; border-bottom:1px solid var(--border); color:var(--ink-2); vertical-align:top; }
+  table.terr-table tr.terr-row{ cursor:pointer; }
+  table.terr-table tr.terr-row:hover td{ background:var(--surface-2); }
+  table.terr-table tr.terr-row.open td{ background:var(--verified-bg); border-bottom-color:transparent; }
+
+  /* both left-hand cells share a 1.45 line-height so their first lines sit on one baseline */
+  .terr-cell{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; }
+  .terr-co{ color:var(--ink); font-weight:600; font-size:13.5px; line-height:1.45; }
+  .terr-dom{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; line-height:1.3; color:var(--muted); }
+  .terr-seg-label{ font-size:12.5px; line-height:1.45; color:var(--ink-2); }
+  .terr-num{ font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; line-height:1.45; }
+  .terr-acv{ display:block; font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:13px; line-height:1.45; color:var(--accent); text-align:right; white-space:nowrap; }
+  .terr-mult{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10.5px; line-height:1.3; color:var(--muted); text-align:right; margin-top:4px; }
+  .terr-states{
+    display:inline-flex; align-items:center; justify-content:center; min-width:30px; height:20px; padding:0 7px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; border-radius:10px;
+    background:var(--modeled-bg); color:var(--modeled-fg);
+  }
+  .terr-states.high{ background:var(--verified-bg); color:var(--verified-fg); }
+  .terr-own{
+    display:inline-flex; align-items:center; height:18px; padding:0 7px;
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.04em; text-transform:uppercase;
+    border-radius:9px; background:var(--page); border:1px solid var(--border); color:var(--muted);
+  }
+  .terr-own.pe{ border-color:var(--verified-line); color:var(--verified-fg); background:var(--verified-bg); }
+
+  /* expanded detail */
+  tr.terr-detail td{ padding:0; background:var(--verified-bg); border-bottom:1px solid var(--border); }
+  .terr-dwrap{ display:grid; grid-template-columns:1.15fr .95fr; gap:24px; padding:4px 18px 20px 0; }
+  .terr-dwrap h5{ margin:0 0 7px; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600; }
+  .terr-dcol > *:last-child{ margin-bottom:0; }
+  .terr-dwrap p{ margin:0 0 16px; font-size:13px; color:var(--ink-2); line-height:1.6; }
+  .terr-chiplist{ display:flex; flex-wrap:wrap; gap:5px; margin:0 0 16px; }
+  .terr-chiplist span{
+    display:inline-flex; align-items:center; height:20px; padding:0 8px;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:var(--surface);
+    border:1px solid var(--border); border-radius:10px; color:var(--ink-2);
+  }
+  .terr-kv{ display:grid; grid-template-columns:auto 1fr; gap:6px 16px; font-size:12.5px; margin:0 0 16px; align-items:baseline; }
+  .terr-kv dt{ font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600; }
+  .terr-kv dd{ margin:0; color:var(--ink-2); }
+  .terr-opener{
+    background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent);
+    border-radius:8px; padding:12px 14px; font-size:13px; color:var(--ink); line-height:1.6;
+  }
+  .terr-titles{ margin:0 0 16px; padding-left:17px; font-size:12.5px; color:var(--ink-2); line-height:1.7; }
+  .terr-foot{
+    display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:space-between; align-items:baseline;
+    margin-top:14px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--muted);
+  }
+  .terr-foot b{ color:var(--accent); font-family:'IBM Plex Mono',monospace; }
+  .terr-empty{ padding:32px 0; text-align:center; color:var(--muted); font-size:13px; }
+
+  /* calculator: inputs left, output panel right, both top-aligned */
+  .terr-calc{ display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; margin-top:18px; }
+  .terr-inputs{ display:flex; flex-direction:column; gap:20px; padding-top:2px; }
+  .terr-slider .lab{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:8px; }
+  .terr-slider .lab span{ font-size:13px; line-height:1.4; color:var(--ink-2); }
+  .terr-slider .lab output{ font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; line-height:1.4; color:var(--accent); }
+  .terr-slider input[type=range]{
+    display:block; width:100%; -webkit-appearance:none; appearance:none; height:4px;
+    background:var(--border); border-radius:2px; outline-offset:4px; margin:0;
+  }
+  .terr-slider input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--accent);
+    cursor:pointer; border:2px solid var(--surface); box-shadow:0 0 0 1px var(--accent);
+  }
+  .terr-slider input[type=range]::-moz-range-thumb{
+    width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; border:2px solid var(--surface);
+  }
+  .terr-slider input[type=range]:focus-visible{ outline:2px solid var(--accent); }
+  .terr-hint{ font-size:11.5px; color:var(--muted); margin-top:7px; line-height:1.45; }
+  .terr-toggle{ display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--ink-2); cursor:pointer; line-height:1.5; }
+  .terr-toggle input{ accent-color:var(--accent); width:15px; height:15px; cursor:pointer; margin:2px 0 0; flex:none; }
+
+  .terr-readout{ background:var(--page); border:1px solid var(--border); border-radius:10px; padding:18px 20px 20px; }
+  .terr-biglab{ font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:600; line-height:1.4; }
+  .terr-big{
+    font-family:'IBM Plex Mono',monospace; font-size:clamp(32px,5vw,44px); font-weight:700;
+    letter-spacing:-.03em; color:var(--accent); line-height:1.05; font-variant-numeric:tabular-nums; margin-top:8px;
+  }
+  .terr-vs{ margin-top:20px; padding-top:14px; border-top:1px solid var(--border); }
+  .terr-vsrow{ display:flex; justify-content:space-between; align-items:baseline; gap:16px; padding:7px 0; font-size:12.5px; }
+  .terr-vsrow .k{ color:var(--muted); }
+  .terr-vsrow .v{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-variant-numeric:tabular-nums; color:var(--ink); white-space:nowrap; }
+  .terr-vsrow.crowd .v{ color:var(--modeled-fg); }
+  .terr-delta{
+    margin-top:16px; padding:12px 14px; background:var(--verified-bg); border:1px solid var(--verified-line);
+    border-radius:8px; font-size:12.5px; color:var(--ink-2); line-height:1.6;
+  }
+  .terr-delta b{ font-family:'IBM Plex Mono',monospace; color:var(--verified-fg); }
+
+  @media (max-width: 860px){
+    .terr-calc{ grid-template-columns:1fr; }
+    .terr-dwrap{ grid-template-columns:1fr; gap:18px; }
+    .terr-reset{ margin-left:0; }
+  }
+  @media (max-width: 480px){
+    .terr-field input[type="search"]{ width:100%; }
+    .terr-field{ flex:1 1 100%; }
+  }
+
   @media (max-width: 860px){
     .tile-grid{ grid-template-columns:repeat(2,1fr); }
     .small-multiples{ grid-template-columns:repeat(2,1fr); }
@@ -415,6 +559,7 @@
     <button class="page-tab" type="button" role="tab" aria-selected="false" data-target="growth-section">Growth</button>
     <button class="page-tab" type="button" role="tab" aria-selected="false" data-target="cost-section">Cost</button>
     <button class="page-tab" type="button" role="tab" aria-selected="false" data-target="funnel-section">Pipeline</button>
+    <button class="page-tab" type="button" role="tab" aria-selected="false" data-target="territory-section">Territory</button>
     <button class="page-tab" type="button" role="tab" aria-selected="false" data-target="model-section">Schema</button>
   </nav>
 
@@ -609,6 +754,118 @@
         </div>
         <p class="chart-meta" style="margin-top:10px;">Team-role members (Thiago, Kendall, Stefan, Hayk, Brandon, Ryan, Yuang) aren't shown here since they don't carry an individual quota or activity number.</p>
         <p class="chart-meta" style="margin-top:4px; color:var(--modeled-fg);">*Every quota, activity, and closed-won number in this table is modeled for demonstration, not these reps' actual figures.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="territory-section" id="territory-section" hidden>
+
+    <div class="notice">
+      <span><b>Why states, not seats.</b> Starter stops at 3 states. Pro unlocks 50. That one line in your pricing turns &ldquo;this company just opened in a new state&rdquo; into the most valuable buying signal you have, and it happens to be visible from outside the building. The trigger below counts distinct US states where a company has a live job posting, indexed in the last 90 days. Every row is checkable: open the careers page and count.</span>
+    </div>
+
+    <div class="tile-grid" style="margin-top:16px;">
+      <div class="tile">
+        <div class="tile-label">Accounts profiled</div>
+        <div class="tile-value tnum" id="terr-stat-accounts">35</div>
+        <div class="tile-note">US-based, headcount and postings verified</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Combined annual value</div>
+        <div class="tile-value tnum" id="terr-stat-acv">$23.4M</div>
+        <div class="tile-note">at your published Pro list price</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Median states hiring in</div>
+        <div class="tile-value tnum" id="terr-stat-median">8</div>
+        <div class="tile-note">Starter caps at 3, so every one is a Pro account</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Surfaced by the same query</div>
+        <div class="tile-value tnum">218</div>
+        <div class="tile-note">these 35 are the ones I hand-checked</div>
+      </div>
+    </div>
+
+    <div class="chart-box" style="margin-top:16px;">
+      <h3>Trigger feed</h3>
+      <div class="chart-meta">click any row for the account workup and an opening line</div>
+
+      <div class="terr-controls" id="terr-chips" role="group" aria-label="Filter by segment"></div>
+
+      <div class="terr-controls terr-controls-row2">
+        <label class="terr-field" for="terr-minst"><span class="terr-field-label">Min states</span>
+          <select id="terr-minst">
+            <option value="3">3+</option>
+            <option value="5" selected>5+</option>
+            <option value="8">8+</option>
+            <option value="11">11+</option>
+          </select>
+        </label>
+        <label class="terr-field" for="terr-q"><span class="terr-field-label">Search</span>
+          <input type="search" id="terr-q" placeholder="company or state" autocomplete="off">
+        </label>
+        <button class="terr-reset" id="terr-reset" type="button">Reset</button>
+      </div>
+
+      <div class="terr-table-wrap">
+        <table class="terr-table">
+          <thead>
+            <tr>
+              <th class="srt" data-k="name" scope="col">Company</th>
+              <th scope="col">Segment</th>
+              <th class="srt sorted" data-k="nStates" scope="col" style="text-align:center">States &darr;</th>
+              <th class="srt" data-k="hc" scope="col" style="text-align:right">Employees</th>
+              <th class="srt" data-k="jobs" scope="col" style="text-align:right">Open roles</th>
+              <th class="srt" data-k="acv" scope="col" style="text-align:right">Est. annual value</th>
+            </tr>
+          </thead>
+          <tbody id="terr-tbody"></tbody>
+        </table>
+      </div>
+      <div class="terr-foot">
+        <span id="terr-count">&nbsp;</span>
+        <span>Headcount &amp; postings verified &middot; annual value modeled at list price</span>
+      </div>
+    </div>
+
+    <div class="chart-box" style="margin-top:16px;">
+      <div class="section-head-top" style="margin-bottom:2px;"><h3 style="margin:0;">What the territory is worth</h3><span class="badge modeled" style="font-size:9.5px;">modeled</span></div>
+      <div class="chart-meta">same rep, same accounts worked, same win rate. The only variable is which list they work. Defaults are the real medians from the 35 accounts above.</div>
+
+      <div class="terr-calc">
+        <div class="terr-inputs">
+          <div class="terr-slider">
+            <div class="lab"><span>Accounts worked per year</span><output id="terr-o-acc">120</output></div>
+            <input type="range" id="terr-s-acc" min="20" max="600" step="10" value="120">
+            <div class="terr-hint">One rep working a focused territory.</div>
+          </div>
+          <div class="terr-slider">
+            <div class="lab"><span>Average employees per account</span><output id="terr-o-hc">650</output></div>
+            <input type="range" id="terr-s-hc" min="25" max="2500" step="25" value="650">
+            <div class="terr-hint">Median across the 35 accounts above is 658.</div>
+          </div>
+          <div class="terr-slider">
+            <div class="lab"><span>Win rate</span><output id="terr-o-wr">4%</output></div>
+            <input type="range" id="terr-s-wr" min="1" max="25" step="1" value="4">
+            <div class="terr-hint">Deliberately conservative, since these are cold, uncontested accounts.</div>
+          </div>
+          <label class="terr-toggle" for="terr-s-tt">
+            <input type="checkbox" id="terr-s-tt" checked>
+            <span>Include time tracking at $5/employee/mo, which applies to hourly and field workforces (26 of the 35)</span>
+          </label>
+        </div>
+
+        <div class="terr-readout">
+          <div class="terr-biglab">New ARR from this territory</div>
+          <div class="terr-big" id="terr-o-arr">$0</div>
+          <div class="terr-vs">
+            <div class="terr-vsrow"><span class="k">Accounts won</span><span class="v" id="terr-o-won">0</span></div>
+            <div class="terr-vsrow"><span class="k">Average ACV</span><span class="v" id="terr-o-acv">$0</span></div>
+            <div class="terr-vsrow crowd"><span class="k">Same effort, contested segment</span><span class="v" id="terr-o-crowd">$0</span></div>
+          </div>
+          <div class="terr-delta" id="terr-o-delta">&nbsp;</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1827,6 +2084,211 @@ group by 1 order by 1</code>
     });
   })();
 
+  var TERRITORY_FEED = [{"id":1229504,"name":"Ivy Health","domain":"ivyhealth.com","founded":2003,"desc":"Network of outpatient physical, occupational, speech and ABA therapy clinics.","owner":"PE-owned","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":3932,"nStates":11,"states":["Pennsylvania","New Jersey","Virginia","New York","Michigan","North Carolina","Illinois","Delaware","Indiana","South Carolina","Connecticut"],"jobs":74,"topTitles":["Physical Therapist - Open Your Own Clinic!","Physical Therapy Aide","Pediatric Physical Therapist, Early Intervention"],"lastSeen":"2026-09-10","acv":2596668,"mult":261.0,"opener":"Ivy Health has live roles in 11 states right now (Pennsylvania, New Jersey, Virginia...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1382015,"name":"Walden Security","domain":"waldensecurity.com","founded":1990,"desc":"Nation's largest privately held, family-owned security officer company.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":2576,"nStates":5,"states":["South Carolina","Tennessee","North Carolina","Texas","Georgia"],"jobs":18,"topTitles":["Security Officer - Laurens, SC","Security Officer, Houston TX","Security Officer- Chattanooga, TN "],"lastSeen":"2026-09-21","acv":1701708,"mult":171.1,"opener":"Walden Security is hiring in 5 states right now (South Carolina, Tennessee, North Carolina...), against roughly 2,576 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1110533,"name":"Dungarvin","domain":"dungarvin.com","founded":1976,"desc":"National provider of community-based support for people with intellectual and developmental disabilities.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":2490,"nStates":13,"states":["Minnesota","Indiana","Texas","Wisconsin","North Carolina","Washington","Kentucky","California","Oklahoma","Connecticut","Massachusetts","Illinois"],"jobs":155,"topTitles":["Direct Support Professional (DSP) / Caregiver","Mental Health Specialist II","Direct Support Professional (DSP)"],"lastSeen":"2026-09-22","acv":1644948,"mult":165.4,"opener":"Dungarvin is hiring in 13 states right now (Minnesota, Indiana, Texas...), against roughly 2,490 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1226814,"name":"Elements Massage®","domain":"elementsmassage.com","founded":2006,"desc":"Franchised therapeutic massage studios.","owner":"Franchisor","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":2368,"nStates":14,"states":["Massachusetts","California","Arizona","Florida","Wisconsin","New Hampshire","Texas","Ohio","Oklahoma","Oregon","New Jersey","Nevada"],"jobs":55,"topTitles":["Massage Therapist","Retail Sales Associate / Customer Service","Esthetician / Aesthetician"],"lastSeen":"2026-09-21","acv":1564428,"mult":157.3,"opener":"Elements Massage® is hiring in 14 states right now (Massachusetts, California, Arizona...), against roughly 2,368 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1065814,"name":"Insomnia Cookies","domain":"insomniacookies.com","founded":2003,"desc":"Late-night cookie delivery chain founded in a Penn dorm room.","owner":"PE-owned","lastRound":"private_equity 2024-07","investors":["Verlinvest","Mistral Equity Partners"],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":2031,"nStates":20,"states":["New York","California","Florida","Massachusetts","New Hampshire","Michigan","Ohio","District of Columbia","Pennsylvania","Iowa","Louisiana","Tennessee"],"jobs":45,"topTitles":["Shift Leader","Cookie Crew","Car Delivery Driver"],"lastSeen":"2026-09-21","acv":1342008,"mult":134.9,"opener":"Insomnia Cookies has live roles in 20 states right now (New York, California, Florida...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1109808,"name":"Apex Companies","domain":"apexcos.com","founded":1988,"desc":"Engineering and environmental solutions; civil and environmental field work.","owner":"PE-owned","lastRound":"2019","investors":["Tailwind Capital","Yukon Partners"],"deskless":true,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":1766,"nStates":12,"states":["California","Connecticut","Pennsylvania","Mississippi","Kansas","South Dakota","Louisiana","New Jersey","Massachusetts","New Hampshire","New York","Tennessee"],"jobs":23,"topTitles":["Landscape Technician (Stormwater)","Landscape Foreman (Stormwater)","Principal - Client Service Leader"],"lastSeen":"2026-09-21","acv":1167108,"mult":117.3,"opener":"Apex Companies has live roles in 12 states right now (California, Connecticut, Pennsylvania...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1360302,"name":"Service Experts","domain":"ServiceExperts.com","founded":1996,"desc":"North America's leading HVAC, Plumbing & Electrical company with 75+ locations.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":1736,"nStates":17,"states":["North Carolina","Texas","Virginia","Florida","Arizona","West Virginia","Alabama","Maine","Tennessee","Colorado","Georgia","Illinois"],"jobs":62,"topTitles":["Residential Sales Consultant I","Installer IV","HVAC Installer IV"],"lastSeen":"2026-09-22","acv":1147308,"mult":115.3,"opener":"Service Experts is hiring in 17 states right now (North Carolina, Texas, Virginia...), against roughly 1,736 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":651817,"name":"Eating Recovery Center","domain":"eatingrecoverycenter.com","founded":2008,"desc":"Eating disorder treatment centers, high-acuity inpatient and outpatient.","owner":"PE-owned","lastRound":"private_equity 2012","investors":["Lee Equity Partners"],"deskless":true,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":1719,"nStates":5,"states":["Texas","Maryland","California","Washington","Illinois"],"jobs":9,"topTitles":["Registered Nurse","Registered Nurse PRN","Clinical Dietitian"],"lastSeen":"2026-09-21","acv":1136088,"mult":114.2,"opener":"Eating Recovery Center has live roles in 5 states right now (Texas, Maryland, California...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1060764,"name":"Caris Life Sciences","domain":"carislifesciences.com","founded":1996,"desc":"Molecular profiling and precision medicine; whole exome and whole transcriptome sequencing.","owner":"VC/PE-backed","lastRound":"private_equity 2025-04","investors":["CPP Investments","Braidwell","ClearBridge"],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":1723,"nStates":12,"states":["Arizona","Texas","Illinois","California","Tennessee","Oklahoma","Nebraska","Kansas","Maryland","Washington","New York","Florida"],"jobs":27,"topTitles":["Histology Technologist (Tuesday - Saturday, 2pm to 10:30pm)","Oracle Fusion Application Analyst","Vice President - Strategic Accounts - Oklahoma"],"lastSeen":"2026-09-21","acv":1035348,"mult":104.1,"opener":"Caris Life Sciences is hiring across 12 states. A cleared, distributed workforce means 12 sets of state tax registrations and unemployment insurance accounts, administered by a team that was hired to win contracts, not to file payroll returns."},{"id":1791086,"name":"Equus Workforce Solutions (ResCare)","domain":"equusworks.com","founded":2020,"desc":"Workforce development and career services delivered under government contracts.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":1379,"nStates":8,"states":["Texas","Ohio","California","New York","Wisconsin","Nevada","Connecticut","Nebraska"],"jobs":31,"topTitles":["Talent Development Specialist","Grant-Career Services Manager","Grant RESEA Employment Specialist"],"lastSeen":"2026-09-22","acv":911688,"mult":91.6,"opener":"Equus Workforce Solutions (ResCare) is hiring in 8 states right now (Texas, Ohio, California...), against roughly 1,379 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1067297,"name":"LEARFIELD","domain":"learfield.com","founded":1972,"desc":"Media, data and technology services across college sports and live events.","owner":"PE-owned","lastRound":"private_equity 2023-09","investors":["Clearlake Capital","Charlesbank","Fortress"],"deskless":false,"seg":"sports","segLabel":"Sports & entertainment","hc":1514,"nStates":19,"states":["Texas","California","Colorado","Alabama","Kentucky","Washington","Iowa","Arkansas","Delaware","Georgia","Tennessee","Oregon"],"jobs":59,"topTitles":["Naming Rights Vice President","Partnership Solutions Coordinator - Eastern Washington University","Commercial Partnerships Director"],"lastSeen":"2026-09-21","acv":909948,"mult":91.5,"opener":"LEARFIELD has live roles in 19 states right now (Texas, California, Colorado...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1294906,"name":"Odyssey","domain":"odysseyconsult.com","founded":1997,"desc":"Management, analytical and technical support services to government and private sector.","owner":"Private","lastRound":null,"investors":[],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":1438,"nStates":5,"states":["Colorado","Florida","Alabama","Ohio","Massachusetts"],"jobs":7,"topTitles":["Senior Marketing & Communications Strategist","Systems Engineer","Senior Program Engineer"],"lastSeen":"2026-09-22","acv":864348,"mult":86.9,"opener":"Odyssey is hiring across 5 states. A cleared, distributed workforce means 5 sets of state tax registrations and unemployment insurance accounts, administered by a team that was hired to win contracts, not to file payroll returns."},{"id":1081596,"name":"VTG (VT Group)","domain":"VTGdefense.com","founded":null,"desc":"Force modernization and digital transformation for naval and aerospace programs.","owner":"PE-owned","lastRound":null,"investors":[],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":1372,"nStates":5,"states":["Virginia","Maryland","Ohio","District of Columbia","California"],"jobs":46,"topTitles":["Software Engineer","Data Scientist","Software Developer"],"lastSeen":"2026-09-12","acv":824748,"mult":82.9,"opener":"VTG (VT Group) has live roles in 5 states right now (Virginia, Maryland, Ohio...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1296136,"name":"Tidal Wave Auto Spa","domain":"tidalwaveautospa.com","founded":2004,"desc":"Express car wash chain, locations nationwide, founded in Thomaston GA.","owner":"PE-owned","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":1046,"nStates":18,"states":["Georgia","Virginia","Florida","North Carolina","Tennessee","Iowa","South Carolina","Kansas","Oklahoma","Minnesota","South Dakota","Ohio"],"jobs":77,"topTitles":["General Manager (Site Leader)","Team Lead - Mechanicsville, VA","Car Wash Attendant - Snellville, GA"],"lastSeen":"2026-09-21","acv":691908,"mult":69.6,"opener":"Tidal Wave Auto Spa has live roles in 18 states right now (Georgia, Virginia, Florida...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1296051,"name":"Sizemore, Inc.","domain":"sizemoreinc.com","founded":1955,"desc":"Parent of Sizemore Janitorial, Security and Staffing Services.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":910,"nStates":10,"states":["Wisconsin","Minnesota","Illinois","Georgia","Florida","Louisiana","Ohio","Michigan","Iowa","North Carolina"],"jobs":39,"topTitles":["Floor Care Cleaning Tech (Español) - Virginia, MN","Floor Care Cleaning Tech (Español) - Madison, WI","Floor Care Cleaning Tech (Español) - Marquette, MI"],"lastSeen":"2026-09-21","acv":602148,"mult":60.5,"opener":"Sizemore, Inc. is hiring in 10 states right now (Wisconsin, Minnesota, Illinois...), against roughly 910 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1224444,"name":"Legacy Healthcare Services","domain":"legacyinc.com","founded":1999,"desc":"On-site contract therapy embedded in senior living communities.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":870,"nStates":11,"states":["Texas","North Carolina","Colorado","Tennessee","Florida","Missouri","Georgia","Pennsylvania","Ohio","Michigan","Illinois"],"jobs":50,"topTitles":["Physical Therapist","Physical Therapy Assistant","Occupational Therapist"],"lastSeen":"2026-09-21","acv":575748,"mult":57.9,"opener":"Legacy Healthcare Services is hiring in 11 states right now (Texas, North Carolina, Colorado...), against roughly 870 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":808405,"name":"Serenity Healthcare","domain":"serenitymentalhealthcenters.com","founded":2017,"desc":"Mental health clinics specialising in TMS and ketamine treatment.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":725,"nStates":8,"states":["Texas","Georgia","Arizona","Utah","Colorado","Florida","Nevada","Virginia"],"jobs":42,"topTitles":["Customer Experience Coach","Member Sales Associate","Practice Manager, Sales & Operations"],"lastSeen":"2026-09-21","acv":480048,"mult":48.3,"opener":"Serenity Healthcare is hiring in 8 states right now (Texas, Georgia, Arizona...), against roughly 725 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":3421685,"name":"Smart Care","domain":"smartcaresolutions.com","founded":2017,"desc":"Nationwide service for commercial foodservice, refrigeration and HVAC equipment.","owner":"PE-owned","lastRound":"debt_financing 2022-09","investors":["Churchill Asset Management"],"deskless":true,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":658,"nStates":6,"states":["California","District of Columbia","Texas","North Carolina","Ohio","Wisconsin"],"jobs":9,"topTitles":["Service Technician","Commercial Kitchen Service Technician","Lead Service Tech Equip Care"],"lastSeen":"2026-09-21","acv":435828,"mult":43.8,"opener":"Smart Care has live roles in 6 states right now (California, District of Columbia, Texas...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1906947,"name":"CCS Facility Services","domain":"ccsbts.com","founded":1988,"desc":"Janitorial and facility services delivered on client sites.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":511,"nStates":7,"states":["Colorado","Arizona","California","Nevada","Washington","Arkansas","New Mexico"],"jobs":58,"topTitles":["Janitor-Part time","Janitor - PT","Janitor - FT"],"lastSeen":"2026-09-21","acv":338808,"mult":34.1,"opener":"CCS Facility Services is hiring in 7 states right now (Colorado, Arizona, California...), against roughly 511 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1220634,"name":"Super Soccer Stars","domain":"supersoccerstars.com","founded":2000,"desc":"Youth soccer instruction across 1,000+ schools and programs.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":507,"nStates":10,"states":["Massachusetts","New York","California","Texas","Tennessee","New Jersey","Georgia","Wisconsin","Maryland","Florida"],"jobs":41,"topTitles":["Early Childhood Soccer Instructor - South OC","Youth Soccer Coach","Preschool Soccer Instructor"],"lastSeen":"2026-09-06","acv":336168,"mult":33.8,"opener":"Super Soccer Stars has open roles in 10 states. Seasonal and event staff across state lines is the single messiest payroll pattern there is, and it usually lands on one person who also does everything else."},{"id":1081070,"name":"Markon","domain":"markonsolutions.com","founded":2007,"desc":"Full-spectrum cyber and technology solutions for national security; NSA-certified red teams.","owner":"Private","lastRound":null,"investors":[],"deskless":false,"seg":"services_rollup","segLabel":"Services roll-ups & facilities","hc":556,"nStates":5,"states":["District of Columbia","New York","Virginia","Maryland","Pennsylvania"],"jobs":18,"topTitles":["Junior Software Engineer","Industrial Hygenist","Technical Targeting Analyst"],"lastSeen":"2026-09-21","acv":335148,"mult":33.7,"opener":"Markon has live postings in 5 states. Distributed W-2 headcount at 556 people means 5 concurrent state filings, which is where most HR-less teams start losing weekends."},{"id":870813,"name":"Volo Sports","domain":"volosports.com","founded":2014,"desc":"Adult recreational sports leagues and Club Volo venues.","owner":"PE-owned","lastRound":"private_equity 2024-11","investors":["Bluestone Equity Partners","Manhattan West"],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":496,"nStates":7,"states":["California","Massachusetts","Colorado","Pennsylvania","New York","Florida","Arizona"],"jobs":29,"topTitles":["Youth Sports Coach-Volleyball","Daily Play Commissioner","Sports Commissioner"],"lastSeen":"2026-09-04","acv":328908,"mult":33.1,"opener":"Volo Sports has live roles in 7 states right now (California, Massachusetts, Colorado...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":934092,"name":"Sigma Defense Systems","domain":"sigmadefense.com","founded":null,"desc":"DoD technology integrator: CJADC2, C5ISR, electronic warfare, DevSecOps.","owner":"Private","lastRound":null,"investors":[],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":528,"nStates":11,"states":["California","Alabama","New York","Maryland","Hawaii","Virginia","Florida","New Mexico","West Virginia","North Dakota","Nevada"],"jobs":40,"topTitles":["1710 - Software Engineer II","1756 - Cybersecurity Engineer","1745 - SOCPAC Liaison Officer"],"lastSeen":"2026-09-21","acv":318348,"mult":32.0,"opener":"Sigma Defense Systems is hiring across 11 states. A cleared, distributed workforce means 11 sets of state tax registrations and unemployment insurance accounts, administered by a team that was hired to win contracts, not to file payroll returns."},{"id":934142,"name":"Canvas","domain":"canvas-inc.com","founded":2007,"desc":"Technical services and engineering for DoD and government agencies.","owner":"Private","lastRound":null,"investors":[],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":496,"nStates":5,"states":["California","Florida","Alabama","New Mexico","Nevada"],"jobs":38,"topTitles":["Scientist & Engineer","Project Management Specialist","Information Systems Security Officer (ISSO)"],"lastSeen":"2026-09-21","acv":299148,"mult":30.1,"opener":"Canvas is hiring across 5 states. A cleared, distributed workforce means 5 sets of state tax registrations and unemployment insurance accounts, administered by a team that was hired to win contracts, not to file payroll returns."},{"id":635552,"name":"TOCA Football","domain":"tocafootball.com","founded":2016,"desc":"Technology-enabled soccer training centers and entertainment venues.","owner":"VC-backed","lastRound":"round 2026-01","investors":["JP Morgan","Harry Kane","D2 Futbol Investors"],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":441,"nStates":11,"states":["Ohio","Georgia","Texas","Illinois","Wisconsin","Washington","Michigan","Colorado","Minnesota","California","Missouri"],"jobs":49,"topTitles":["Soccer Skills Trainer","Guest Experience Associate","Soccer Class Coach"],"lastSeen":"2026-09-08","acv":292608,"mult":29.4,"opener":"TOCA Football has open roles in 11 states. Seasonal and event staff across state lines is the single messiest payroll pattern there is, and it usually lands on one person who also does everything else."},{"id":646444,"name":"Connections Health Solutions","domain":"connectionshs.com","founded":2009,"desc":"24/7 behavioral health crisis centers run with local governments and health systems.","owner":"VC-backed","lastRound":"series_b 2023-10","investors":["Town Hall Ventures","Heritage Group"],"deskless":true,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":434,"nStates":5,"states":["Arizona","Pennsylvania","Virginia","California","Washington"],"jobs":27,"topTitles":["Behavioral Health Specialist (Full Time, BED)","Behavioral Health Specialist (Full Time, FED)","Family Support Specialist (Day PRN/Pool)"],"lastSeen":"2026-09-21","acv":287988,"mult":28.9,"opener":"Connections Health Solutions is hiring in 5 states right now (Arizona, Pennsylvania, Virginia...), against roughly 434 employees. At that spread, multi-state registration and hourly compliance is a standing job, not a thing you do once a year."},{"id":1220810,"name":"Shopko Optical","domain":"shopko.com","founded":2019,"desc":"Optometry retail, 100+ locations.","owner":"PE-owned","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":384,"nStates":7,"states":["South Dakota","North Dakota","Minnesota","Iowa","Nebraska","Wisconsin","Illinois"],"jobs":14,"topTitles":["Regional Manager","Optical Sales Associate","Senior Human Resources Generalist"],"lastSeen":"2026-09-10","acv":254988,"mult":25.6,"opener":"Shopko Optical has live roles in 7 states right now (South Dakota, North Dakota, Minnesota...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1190554,"name":"3STEP Sports","domain":"threestep.com","founded":2016,"desc":"Largest youth sports club and event organization; 152 brands, 2,500+ programs.","owner":"PE-owned","lastRound":"growth 2019","investors":["Juggernaut Capital Partners"],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":304,"nStates":5,"states":["New York","Connecticut","Ohio","Georgia","New Hampshire"],"jobs":13,"topTitles":["3d Georgia Manager","Part-Time Weekend Event Staff – Site Director (Trumbull, CT)","Part-Time Weekend Staff - Scorekeeping - Zero Gravity Basketball (Arsdley, NY)"],"lastSeen":"2026-09-09","acv":202188,"mult":20.3,"opener":"3STEP Sports has live roles in 5 states right now (New York, Connecticut, Ohio...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1905673,"name":"Sila Services","domain":"silaservices.com","founded":1989,"desc":"HVAC, Plumbing and Electrical roll-up; describes 3,000+ team members across brands.","owner":"PE-owned","lastRound":"debt_financing 2023-04","investors":["Churchill Asset Management","Morgan Stanley"],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":276,"nStates":9,"states":["Massachusetts","Pennsylvania","New Hampshire","Virginia","New Jersey","Connecticut","Maine","New York","Ohio"],"jobs":15,"topTitles":["Customer Service Representative","HVAC Install Helper","HVAC Service Technician"],"lastSeen":"2026-09-21","acv":183708,"mult":18.5,"opener":"Sila Services has live roles in 9 states right now (Massachusetts, Pennsylvania, New Hampshire...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":857810,"name":"Prescient Edge","domain":"prescientedge.com","founded":2008,"desc":"Veteran-owned tier-1 technology integrator for DoD and intelligence community.","owner":"Private","lastRound":null,"investors":[],"deskless":false,"seg":"hard_tech","segLabel":"Defense & life sciences","hc":289,"nStates":10,"states":["Florida","California","Maryland","Virginia","Alabama","Mississippi","Indiana","District of Columbia","North Carolina","Ohio"],"jobs":31,"topTitles":["Junior Software Developer","SME Software Developer and Web Master Team Support (Computer Sci with Security Clearance","Software Developer Level 1"],"lastSeen":"2026-09-20","acv":174948,"mult":17.6,"opener":"Prescient Edge is hiring across 10 states. A cleared, distributed workforce means 10 sets of state tax registrations and unemployment insurance accounts, administered by a team that was hired to win contracts, not to file payroll returns."},{"id":1128188,"name":"Prep Network","domain":"prepnetwork.com","founded":2012,"desc":"Youth and high school sports rankings, tournaments and showcases.","owner":"PE-owned","lastRound":"private_equity 2025-09","investors":["Maple Park Capital Partners"],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":255,"nStates":13,"states":["Kansas","Arizona","Nevada","Arkansas","Nebraska","West Virginia","Utah","Oregon","Georgia","Virginia","Pennsylvania","Florida"],"jobs":20,"topTitles":["Prep Redzone Scout (Arizona)","Prep Redzone Scout (Nevada)","Prep Girls Hoops Scout (Kansas)"],"lastSeen":"2026-09-03","acv":169848,"mult":17.1,"opener":"Prep Network has live roles in 13 states right now (Kansas, Arizona, Nevada...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1145892,"name":"Ripken Baseball","domain":"ripkenbaseball.com","founded":1991,"desc":"Youth baseball tournaments and experiences; Ripken family sports business.","owner":"PE-owned","lastRound":"private_equity 2018","investors":["LionTree"],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":170,"nStates":5,"states":["New Jersey","Tennessee","South Carolina","California","Nevada"],"jobs":6,"topTitles":["Cashier","Food & Beverage Associate","2027 Baseball Operations Intern"],"lastSeen":"2026-09-02","acv":113748,"mult":11.4,"opener":"Ripken Baseball has live roles in 5 states right now (New Jersey, Tennessee, South Carolina...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."},{"id":1916508,"name":"Syracuse Crunch","domain":"syracusecrunch.com","founded":1994,"desc":"AHL professional hockey team, Tampa Bay Lightning affiliate.","owner":"Private","lastRound":null,"investors":[],"deskless":true,"seg":"sports","segLabel":"Sports & entertainment","hc":77,"nStates":8,"states":["Massachusetts","New York","Indiana","Maryland","Virginia","Georgia","Pennsylvania","North Dakota"],"jobs":13,"topTitles":["CORPORATE PARTNERSHIPS COORDINATOR","IN-ARENA EMCEE","INTERNSHIP"],"lastSeen":"2026-09-04","acv":52368,"mult":5.3,"opener":"Syracuse Crunch has open roles in 8 states. Seasonal and event staff across state lines is the single messiest payroll pattern there is, and it usually lands on one person who also does everything else."},{"id":822728,"name":"Total Life","domain":"totallife.com","founded":2021,"desc":"Medicare-covered online therapy for older adults; licensed clinicians by state.","owner":"VC-backed","lastRound":"seed 2022-01","investors":["Primetime Partners","HDS Capital"],"deskless":false,"seg":"health_staffing","segLabel":"Healthcare, home care & behavioral","hc":72,"nStates":6,"states":["Texas","California","Michigan","New Jersey","Florida","New York"],"jobs":6,"topTitles":["Geriatric Nurse Practitioner - Telehealth (Longevity Program)"],"lastSeen":"2026-09-18","acv":44748,"mult":4.5,"opener":"Total Life has live postings in 6 states. Distributed W-2 headcount at 72 people means 6 concurrent state filings, which is where most HR-less teams start losing weekends."},{"id":4080391,"name":"Guild Garage Group","domain":"guildgaragegroup.com","founded":2023,"desc":"Buy-and-build group acquiring garage door companies; retains employees and management.","owner":"Roll-up","lastRound":null,"investors":[],"deskless":true,"seg":"multi_unit","segLabel":"Multi-unit & franchise operators","hc":50,"nStates":6,"states":["Colorado","Washington","West Virginia","North Carolina","Utah","Maryland"],"jobs":9,"topTitles":["Garage Door Technician","Garage Door - Install Technician","Garage Door Sales Consultant"],"lastSeen":"2026-09-21","acv":34548,"mult":3.5,"opener":"Guild Garage Group has live roles in 6 states right now (Colorado, Washington, West Virginia...). For a sponsor-backed buy-and-build, every add-on brings another entity and another set of state registrations. That is the part that does not scale on a legacy stack."}];
+
+  // ---------- render: territory (trigger feed + TAM calculator) ----------
+  // TERRITORY_FEED is real data: 6,000 US job postings indexed in the last 90 days, aggregated
+  // by employer into distinct-state counts, then each finalist enriched to confirm US base,
+  // headcount, founding year and ownership. acv is modeled from Warp's published Pro list price.
+  (function(){
+    var PRO_EE = 50, PLATFORM = 129, TIMETRACK = 5, BASELINE_HC = 14;
+
+    function money(n){ return "$" + Math.round(n).toLocaleString("en-US"); }
+    function moneyCompact(n){
+      if (n >= 1e9) return "$" + (n/1e9).toFixed(2) + "B";
+      if (n >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
+      if (n >= 1e3) return "$" + Math.round(n/1e3) + "K";
+      return "$" + Math.round(n);
+    }
+    function esc(s){
+      return String(s).replace(/[&<>"]/g, function(c){
+        return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c];
+      });
+    }
+
+    // ----- headline stats, computed from the data rather than hard-coded -----
+    var totalAcv = TERRITORY_FEED.reduce(function(a,r){ return a + r.acv; }, 0);
+    var sortedStates = TERRITORY_FEED.map(function(r){ return r.nStates; }).sort(function(a,b){ return a-b; });
+    document.getElementById("terr-stat-accounts").textContent = TERRITORY_FEED.length;
+    document.getElementById("terr-stat-acv").textContent = moneyCompact(totalAcv);
+    document.getElementById("terr-stat-median").textContent = sortedStates[Math.floor(sortedStates.length/2)];
+
+    // ----- segment filter chips -----
+    var segMeta = {}, segOrder = [];
+    TERRITORY_FEED.forEach(function(r){
+      if (!segMeta[r.seg]){ segMeta[r.seg] = { label:r.segLabel, n:0 }; segOrder.push(r.seg); }
+      segMeta[r.seg].n++;
+    });
+    var active = {};
+    segOrder.forEach(function(s){ active[s] = true; });
+
+    var chipHost = document.getElementById("terr-chips");
+    segOrder.forEach(function(s){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "terr-seg-chip";
+      b.setAttribute("aria-pressed","true");
+      b.innerHTML = esc(segMeta[s].label) + '<span class="ct">' + segMeta[s].n + '</span>';
+      b.addEventListener("click", function(){
+        active[s] = !active[s];
+        b.setAttribute("aria-pressed", active[s] ? "true" : "false");
+        renderFeed();
+      });
+      chipHost.appendChild(b);
+    });
+
+    // ----- sorting -----
+    var sortKey = "nStates", sortDir = -1;
+    var heads = [].slice.call(document.querySelectorAll("table.terr-table th.srt"));
+    var headLabels = { name:"Company", nStates:"States", hc:"Employees", jobs:"Open roles", acv:"Est. annual value" };
+    heads.forEach(function(th){
+      th.addEventListener("click", function(){
+        var k = th.getAttribute("data-k");
+        if (sortKey === k){ sortDir = -sortDir; }
+        else { sortKey = k; sortDir = (k === "name") ? 1 : -1; }
+        heads.forEach(function(h){
+          h.classList.remove("sorted");
+          h.textContent = headLabels[h.getAttribute("data-k")];
+        });
+        th.classList.add("sorted");
+        th.textContent = headLabels[k] + (sortDir === 1 ? " ↑" : " ↓");
+        renderFeed();
+      });
+    });
+
+    var minStSel = document.getElementById("terr-minst");
+    var searchInput = document.getElementById("terr-q");
+    minStSel.addEventListener("change", renderFeed);
+    searchInput.addEventListener("input", renderFeed);
+    document.getElementById("terr-reset").addEventListener("click", function(){
+      segOrder.forEach(function(s){ active[s] = true; });
+      [].slice.call(chipHost.children).forEach(function(c){ c.setAttribute("aria-pressed","true"); });
+      minStSel.value = "5";
+      searchInput.value = "";
+      renderFeed();
+    });
+
+    var openId = null;
+    var tbody = document.getElementById("terr-tbody");
+
+    function detailHtml(r){
+      var investors = (r.investors && r.investors.length) ? r.investors.join(", ") : "–";
+      var states = r.states.map(function(s){ return "<span>" + esc(s) + "</span>"; }).join("");
+      var titles = r.topTitles.map(function(t){ return "<li>" + esc(t) + "</li>"; }).join("");
+      return '<tr class="terr-detail"><td colspan="6"><div class="terr-dwrap">' +
+        '<div class="terr-dcol">' +
+          '<h5>What they are</h5><p>' + esc(r.desc) + '</p>' +
+          '<h5>Hiring in these states now</h5><div class="terr-chiplist">' + states + '</div>' +
+          '<h5>Sample open roles</h5><ul class="terr-titles">' + titles + '</ul>' +
+        '</div>' +
+        '<div class="terr-dcol">' +
+          '<h5>Account facts</h5>' +
+          '<dl class="terr-kv">' +
+            '<dt>Founded</dt><dd>' + (r.founded || "–") + '</dd>' +
+            '<dt>Ownership</dt><dd>' + esc(r.owner) + '</dd>' +
+            '<dt>Last round</dt><dd>' + esc(r.lastRound || "–") + '</dd>' +
+            '<dt>Backers</dt><dd>' + esc(investors) + '</dd>' +
+            '<dt>Workforce</dt><dd>' + (r.deskless ? "Hourly / field" : "Salaried / distributed") + '</dd>' +
+            '<dt>Last posting</dt><dd>' + esc(r.lastSeen || "–") + '</dd>' +
+          '</dl>' +
+          '<h5>Opening line</h5>' +
+          '<div class="terr-opener">' + esc(r.opener) + '</div>' +
+        '</div>' +
+      '</div></td></tr>';
+    }
+
+    function renderFeed(){
+      var minSt = parseInt(minStSel.value, 10);
+      var term = searchInput.value.trim().toLowerCase();
+
+      var rows = TERRITORY_FEED.filter(function(r){
+        if (!active[r.seg]) return false;
+        if (r.nStates < minSt) return false;
+        if (term){
+          var hay = (r.name + " " + r.domain + " " + r.states.join(" ") + " " + r.segLabel).toLowerCase();
+          if (hay.indexOf(term) < 0) return false;
+        }
+        return true;
+      });
+
+      rows.sort(function(a,b){
+        var x = a[sortKey], y = b[sortKey];
+        if (typeof x === "string") return x.localeCompare(y) * sortDir;
+        return (x - y) * sortDir;
+      });
+
+      if (!rows.length){
+        tbody.innerHTML = '<tr><td colspan="6"><div class="terr-empty">No accounts match. Widen the filters.</div></td></tr>';
+      } else {
+        var html = "";
+        rows.forEach(function(r){
+          var isOpen = (openId === r.id);
+          var isPe = (r.owner === "PE-owned" || r.owner === "Roll-up");
+          html += '<tr class="terr-row' + (isOpen ? " open" : "") + '" data-id="' + r.id + '" tabindex="0" role="button" aria-expanded="' + (isOpen ? "true" : "false") + '">' +
+            '<td><div class="terr-cell"><span class="terr-co">' + esc(r.name) + '</span><span class="terr-dom">' + esc(r.domain) + '</span></div></td>' +
+            '<td><div class="terr-cell"><span class="terr-seg-label">' + esc(r.segLabel) + '</span><span class="terr-own' + (isPe ? " pe" : "") + '">' + esc(r.owner) + '</span></div></td>' +
+            '<td style="text-align:center"><span class="terr-states' + (r.nStates >= 10 ? " high" : "") + '">' + r.nStates + '</span></td>' +
+            '<td class="terr-num">' + r.hc.toLocaleString("en-US") + '</td>' +
+            '<td class="terr-num">' + r.jobs + '</td>' +
+            '<td><span class="terr-acv">' + money(r.acv) + '</span><span class="terr-mult">' + r.mult + '× a typical logo</span></td>' +
+          '</tr>';
+          if (isOpen) html += detailHtml(r);
+        });
+        tbody.innerHTML = html;
+      }
+
+      var sum = rows.reduce(function(a,r){ return a + r.acv; }, 0);
+      document.getElementById("terr-count").innerHTML =
+        rows.length + " account" + (rows.length === 1 ? "" : "s") + " shown &middot; <b>" + moneyCompact(sum) + "</b> combined annual value";
+
+      [].slice.call(tbody.querySelectorAll("tr.terr-row")).forEach(function(tr){
+        function toggle(){
+          var id = parseInt(tr.getAttribute("data-id"), 10);
+          openId = (openId === id) ? null : id;
+          renderFeed();
+        }
+        tr.addEventListener("click", toggle);
+        tr.addEventListener("keydown", function(e){
+          if (e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+        });
+      });
+    }
+
+    // ----- TAM calculator -----
+    var sAcc = document.getElementById("terr-s-acc");
+    var sHc  = document.getElementById("terr-s-hc");
+    var sWr  = document.getElementById("terr-s-wr");
+    var sTt  = document.getElementById("terr-s-tt");
+
+    function calc(){
+      var accounts = +sAcc.value, hc = +sHc.value, winRate = +sWr.value / 100, timeTrack = sTt.checked;
+      var perAccount = hc * PRO_EE * 12 + PLATFORM * 12 + (timeTrack ? hc * TIMETRACK * 12 : 0);
+      var won = accounts * winRate;
+      var arr = won * perAccount;
+      var baselinePer = BASELINE_HC * PRO_EE * 12 + PLATFORM * 12;
+      var crowded = won * baselinePer;
+
+      document.getElementById("terr-o-acc").textContent = accounts;
+      document.getElementById("terr-o-hc").textContent = hc.toLocaleString("en-US");
+      document.getElementById("terr-o-wr").textContent = Math.round(winRate * 100) + "%";
+      document.getElementById("terr-o-arr").textContent = moneyCompact(arr);
+      document.getElementById("terr-o-won").textContent = won.toFixed(1);
+      document.getElementById("terr-o-acv").textContent = money(perAccount);
+      document.getElementById("terr-o-crowd").textContent = moneyCompact(crowded);
+
+      var mult = perAccount / baselinePer;
+      document.getElementById("terr-o-delta").innerHTML =
+        "Identical activity. <b>" + mult.toFixed(1) + "×</b> the revenue, because the accounts carry <b>" +
+        Math.round(hc / BASELINE_HC) + "×</b> the employees, and nobody else is calling them.";
+    }
+
+    [sAcc, sHc, sWr].forEach(function(el2){ el2.addEventListener("input", calc); });
+    sTt.addEventListener("change", calc);
+
+    renderFeed();
+    calc();
+  })();
+
   // ---------- page tabs: each header is now its own page ----------
   (function(){
     var tabs = document.querySelectorAll(".page-tab");
@@ -1856,7 +2318,7 @@ group by 1 order by 1</code>
       });
     });
 
-    var hashMap = { hiring:"roster-section", growth:"growth-section", cost:"cost-section", pipeline:"funnel-section", schema:"model-section" };
+    var hashMap = { hiring:"roster-section", growth:"growth-section", cost:"cost-section", pipeline:"funnel-section", territory:"territory-section", schema:"model-section" };
     var fromHash = hashMap[(location.hash || "").replace("#", "")];
     activate(fromHash || "roster-section", true);
   })();
