@@ -547,7 +547,6 @@
 
     <div class="chart-box" style="margin-top:16px;">
       <div class="section-head-top" style="margin-bottom:2px;"><h3 style="margin:0;">Deal desk: who owns each stage</h3><span class="badge modeled" style="font-size:9.5px;">proposed</span></div>
-      <div class="chart-meta">the handoff point that OwnerId reassignment in the schema below is built around</div>
       <div style="margin-top:14px;">
         <div class="flow-lane">
           <div class="flow-lane-label"><span class="flow-lane-dot" style="background:var(--accent-2);"></span>GTM &amp; Growth</div>
@@ -694,35 +693,6 @@ group by r.name, r.track, r.quota_quarterly</code>
 from fct_hiring_cost
 group by 1 order by 1</code>
             <div class="worked">&rarr; the efficiency-index line in the Cost section above, before normalizing to Q2 '25.</div>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <details class="model" style="margin-top:14px;">
-      <summary>How I'd actually roll this out</summary>
-      <div class="model-body">
-        <div class="compare-grid">
-          <div class="compare-card">
-            <h3>Phase 1 &middot; weeks 1&ndash;3</h3>
-            <div class="cc-sub">land the real objects</div>
-            <div class="cc-row"><span class="cc-label">Sync Opportunity, Account, User via Fivetran/native connector</span></div>
-            <div class="cc-row"><span class="cc-label">Add Segment__c, Demo_Scheduled_Date__c and the other stage-gate fields from the schema above</span></div>
-            <div class="cc-row"><span class="cc-label">Backfill dim_rep from the LinkedIn/HRIS roster already used on the Hiring tab</span></div>
-          </div>
-          <div class="compare-card">
-            <h3>Phase 2 &middot; weeks 4&ndash;7</h3>
-            <div class="cc-sub">build the marts</div>
-            <div class="cc-row"><span class="cc-label">int_pipeline_stages, fct_pipeline_stage, fct_hiring_cost as dbt models, tested and documented</span></div>
-            <div class="cc-row"><span class="cc-label">Nightly Payroll_Processing_Volume__c rollup from the Snowflake payroll-volume tables</span></div>
-            <div class="cc-row"><span class="cc-label">Replace every modeled number on this page with its real query, one section at a time</span></div>
-          </div>
-          <div class="compare-card">
-            <h3>Phase 3 &middot; weeks 8+</h3>
-            <div class="cc-sub">put it in front of the team</div>
-            <div class="cc-row"><span class="cc-label">Rep-facing attainment view, refreshed daily instead of quarter-end</span></div>
-            <div class="cc-row"><span class="cc-label">Slack alert when a segment's win rate or cycle length moves outside its trailing range</span></div>
-            <div class="cc-row"><span class="cc-label">Hiring-plan calculator wired to live comp bands and actual ramp curves, not the modeled ones above</span></div>
           </div>
         </div>
       </div>
